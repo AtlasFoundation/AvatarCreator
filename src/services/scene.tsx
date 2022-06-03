@@ -1,12 +1,34 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+<<<<<<< HEAD:src/services/scene.tsx
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
+=======
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+// import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
+import GLTFExporter from 'three-gltf-exporter';
+
+>>>>>>> 57bc328 (add draco compression when exporting glb):src/services/three.tsx
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
 import { Buffer } from "buffer";
 import html2canvas from "html2canvas";
 import { VRM } from "@pixiv/three-vrm";
 
+<<<<<<< HEAD:src/services/scene.tsx
 export const sceneService = {
+=======
+
+import VRMExporter from "../library/vrm-exporter";
+
+import { WebIO } from '@gltf-transform/core';
+import { KHRONOS_EXTENSIONS, DracoMeshCompression } from '@gltf-transform/extensions';
+import { weld } from '@gltf-transform/functions';
+
+
+import DracoEncoderModule from "../library/draco/draco_encoder";
+import DracoDecoderModule from "../library/draco/draco_decoder";
+
+export const threeService = {
+>>>>>>> 57bc328 (add draco compression when exporting glb):src/services/three.tsx
   loadModel,
   updatePose,
   updateMorphValue,
@@ -204,6 +226,7 @@ async function download(
   const link = document.createElement("a");
   link.style.display = "none";
   document.body.appendChild(link);
+
   function save(blob, filename) {
     link.href = URL.createObjectURL(blob);
     link.download = filename;
@@ -218,12 +241,24 @@ async function download(
     save(new Blob([buffer], { type: "application/octet-stream" }), filename);
   }
 
+  function saveArrayBufferVRM(vrm, filename) {
+    save(new Blob([vrm], { type: "octet/stream" }), filename);
+  }
+
   // Specifying the name of the downloadable model
   const downloadFileName = `${
     fileName && fileName !== "" ? fileName : "AvatarCreatorModel"
   }`;
 
   if (format && format === "gltf/glb") {
+
+    const io = new WebIO()
+    .registerExtensions( KHRONOS_EXTENSIONS )
+    .registerDependencies( {
+      'draco3d.encoder': await new DracoEncoderModule(),
+      'draco3d.decoder': await new DracoDecoderModule(),
+    } );
+
     const exporter = new GLTFExporter();
     var options = {
       trs: false,
@@ -235,9 +270,28 @@ async function download(
     };
     exporter.parse(
       model.scene,
-      function (result) {
+      async function (result) {
         if (result instanceof ArrayBuffer) {
           console.log(result);
+          var document;
+          result = new Uint8Array(result);
+          await io.readBinary( result ).then(res => {
+            document = res;
+          }).catch(err => {
+            console.log(err)
+          });
+          
+          await document.transform(
+            weld(),
+        );
+          document.createExtension( DracoMeshCompression )
+            .setRequired( true )
+            .setEncoderOptions( {
+              method: DracoMeshCompression.EncoderMethod.EDGEBREAKER
+            } );
+
+          result = await io.writeBinary( document );//it returns arraybuffer
+
           saveArrayBuffer(result, `${downloadFileName}.glb`);
         } else {
           var output = JSON.stringify(result, null, 2);
@@ -250,12 +304,12 @@ async function download(
     const exporter = new OBJExporter();
     saveArrayBuffer(exporter.parse(model.scene), `${downloadFileName}.obj`);
   } else if (format && format === "vrm") {
-    // model.userData = model.userData ?? {}
-    // model.userData.gltfExtensions = { VRM: {} };
-    console.log("VRM ModelAAAAAA: ", model);
-    VRM.from(model).then((vrm) => {
-      console.log("VRM Model: ", vrm);
-      saveArrayBuffer(vrm, `${downloadFileName}.vrm`);
+    const exporter = new VRMExporter();
+
+    exporter.parse(model, (vrm : ArrayBuffer) => {
+      saveArrayBufferVRM(vrm, `${downloadFileName}.vrm`);
     });
+
   }
 }
+
