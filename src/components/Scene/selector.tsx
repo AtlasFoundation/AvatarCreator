@@ -69,30 +69,36 @@ export default function Selector() {
 
   React.useEffect(() => {
     if(!scene) return;
-    async function _get() {
-      const categories = [
-        'hair',
-        'tops',
-        'legs',
-        'shoes'
-      ]
-      if(!loaded){
-        setTempInfo('2');
-        if (scene && templateInfo) {
-          for(const category of categories){
-            apiService.fetchTraitsByCategory(category).then((traits) => {
-              if (traits) {
-               selectTrait(traits?.collection[0])
-              }
-            }); 
-          }
-        }
-      }
-    }
     _get();
   }, [loaded, scene, templateInfo ? Object.keys(templateInfo).length : templateInfo]);
 
-  const setTempInfo = (id) => {
+  const _get =  () => {
+    if(!loaded){
+      setTempInfo();
+      _defaultClothes();
+    }
+  }
+
+  const _defaultClothes = () => {
+    if(!scene) return;
+    const categories = [
+      'hair',
+      'tops',
+      'legs',
+      'shoes'
+    ]
+    if (scene && templateInfo) {
+      for(const category of categories){
+        apiService.fetchTraitsByCategory(category).then((traits) => {
+          if (traits) {
+            selectTrait(traits?.collection[2]);
+            // setTraitName(traits?.trait);
+          }
+        });
+      }
+    }
+  }
+  const setTempInfo = (id = '2') => {
     apiService.fetchTemplate(id).then((res) => {
       setTemplateInfo(res);
     });
@@ -171,15 +177,9 @@ export default function Selector() {
                   }
                 });
 
-
-
-
-
-
                 scene.add(vrm.scene);
                 vrm.humanoid.getBoneNode( VRMSchema.HumanoidBoneName.Hips ).rotation.y = Math.PI;
                 vrm.scene.frustumCulled = false;
-                console.log(trait);
                 if (traitName === "hair") {
                   console.log("HAIR");
                   setHair({
