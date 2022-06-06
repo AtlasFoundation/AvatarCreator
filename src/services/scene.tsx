@@ -17,8 +17,8 @@ import { VRM } from "@pixiv/three-vrm";
 export const sceneService = {
 =======
 
-// import VRMExporter from "../library/vrm-exporter";
-import VRMExporter from "../library/vrm-exporterw";
+// import VRMExporter from "../library/VRMExporter";
+import VRMExporter from "../library/vrm-exporter";
 
 import { WebIO } from '@gltf-transform/core';
 import { KHRONOS_EXTENSIONS, DracoMeshCompression } from '@gltf-transform/extensions';
