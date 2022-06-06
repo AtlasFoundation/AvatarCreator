@@ -17,7 +17,8 @@ import { VRM } from "@pixiv/three-vrm";
 export const sceneService = {
 =======
 
-import VRMExporter from "../library/vrm-exporter";
+// import VRMExporter from "../library/vrm-exporter";
+import VRMExporter from "../library/vrm-exporterw";
 
 import { WebIO } from '@gltf-transform/core';
 import { KHRONOS_EXTENSIONS, DracoMeshCompression } from '@gltf-transform/extensions';
@@ -304,12 +305,38 @@ async function download(
     const exporter = new OBJExporter();
     saveArrayBuffer(exporter.parse(model.scene), `${downloadFileName}.obj`);
   } else if (format && format === "vrm") {
+
+    // exporter.parse(model, (vrm : ArrayBuffer) => {
+    //   saveArrayBufferVRM(vrm, `${downloadFileName}.vrm`);
+    // });
+
+    let vrmModel;
+    model.scene.userData.gltfExtensions = { VRM: {} };
+    // await VRM.from(model).then((vrm) => {
+    //   model.scene = vrm.scene;
+    // });
+    vrmModel = model;
+
     const exporter = new VRMExporter();
 
-    exporter.parse(model, (vrm : ArrayBuffer) => {
-      saveArrayBufferVRM(vrm, `${downloadFileName}.vrm`);
-    });
+    const options = {
+      trs: false,
+      onlyVisible: true,
+      truncateDrawRange: true,
+      binary: true,
+      forcePowerOfTwoTextures: false,
+      maxTextureSize: 1024 || Infinity,
+    };
 
+    exporter.parse(
+      model.scene,
+      vrmModel.vrmExt,
+      model,
+      async function (result) {
+         saveArrayBuffer(result, `${downloadFileName}.vrm`);
+      },
+      options
+    );
   }
 }
 

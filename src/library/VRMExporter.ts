@@ -163,6 +163,7 @@ export default class VRMExporter {
         child.type === VRMObjectType.Group ||
         child.type === VRMObjectType.SkinnedMesh
     );
+    console.log('aaaaaaaaaaaaaaa', meshes)
 
     const meshDatas: Array<MeshData> = [];
     meshes.forEach((object) => {
@@ -243,38 +244,40 @@ export default class VRMExporter {
 
       // TODO: とりあえずundefiendは例外スロー
       if (!mesh.morphTargetDictionary) {
-        throw new Error(mesh.name + " morphTargetDictionary is null");
+       console.error(mesh.name + " morphTargetDictionary is null");
+      }else{
+        const morphIndexPair = Object.entries(mesh.morphTargetDictionary);
+        if (mesh.geometry.userData.targetNames) {
+          mesh.geometry.userData.targetNames.forEach((targetName) => {
+            const morphIndex = morphIndexPair.filter(
+              (pair) => pair[0] === targetName
+            )[0][1];
+            const morphAttribute = mesh.geometry.morphAttributes;
+            meshDatas.push(
+              new MeshData(
+                morphAttribute.position[morphIndex],
+                WEBGL_CONST.FLOAT,
+                MeshDataType.BLEND_POSITION,
+                AccessorsType.VEC3,
+                mesh.name,
+                BLENDSHAPE_PREFIX + targetName
+              )
+            );
+            meshDatas.push(
+              new MeshData(
+                morphAttribute.normal[morphIndex],
+                WEBGL_CONST.FLOAT,
+                MeshDataType.BLEND_NORMAL,
+                AccessorsType.VEC3,
+                mesh.name,
+                BLENDSHAPE_PREFIX + targetName
+              )
+            );
+          });
+        }
       }
 
-      const morphIndexPair = Object.entries(mesh.morphTargetDictionary);
-      if (mesh.geometry.userData.targetNames) {
-        mesh.geometry.userData.targetNames.forEach((targetName) => {
-          const morphIndex = morphIndexPair.filter(
-            (pair) => pair[0] === targetName
-          )[0][1];
-          const morphAttribute = mesh.geometry.morphAttributes;
-          meshDatas.push(
-            new MeshData(
-              morphAttribute.position[morphIndex],
-              WEBGL_CONST.FLOAT,
-              MeshDataType.BLEND_POSITION,
-              AccessorsType.VEC3,
-              mesh.name,
-              BLENDSHAPE_PREFIX + targetName
-            )
-          );
-          meshDatas.push(
-            new MeshData(
-              morphAttribute.normal[morphIndex],
-              WEBGL_CONST.FLOAT,
-              MeshDataType.BLEND_NORMAL,
-              AccessorsType.VEC3,
-              mesh.name,
-              BLENDSHAPE_PREFIX + targetName
-            )
-          );
-        });
-      }
+
     });
 
     // inverseBindMatrices length = 16(matrixの要素数) * 4バイト * ボーン数

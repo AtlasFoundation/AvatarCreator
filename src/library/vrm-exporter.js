@@ -104,11 +104,11 @@ var VRMExporter = (function(){
 						},
 
 				};
-                var extensions = model.parser.json.extensions
+                // var extensions = model.scene.parser.extensions;
 
                 outputJSON = {
                     ...outputJSON,
-                    extensions
+                    // extensions
                 }
 
 				var byteOffset = 0;
