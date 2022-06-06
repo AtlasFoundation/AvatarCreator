@@ -163,7 +163,6 @@ export default class VRMExporter {
         child.type === VRMObjectType.Group ||
         child.type === VRMObjectType.SkinnedMesh
     );
-    console.log('aaaaaaaaaaaaaaa', meshes)
 
     const meshDatas: Array<MeshData> = [];
     meshes.forEach((object) => {
