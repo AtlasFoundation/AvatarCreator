@@ -1,21 +1,14 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-<<<<<<< HEAD:src/services/scene.tsx
-import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
-=======
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 // import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import GLTFExporter from 'three-gltf-exporter';
 
->>>>>>> 57bc328 (add draco compression when exporting glb):src/services/three.tsx
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
 import { Buffer } from "buffer";
 import html2canvas from "html2canvas";
 import { VRM } from "@pixiv/three-vrm";
 
-<<<<<<< HEAD:src/services/scene.tsx
-export const sceneService = {
-=======
 
 import VRMExporter from "../library/VRMExporter";
 // import VRMExporter from "../library/vrm-exporter";
@@ -29,7 +22,6 @@ import DracoEncoderModule from "../library/draco/draco_encoder";
 import DracoDecoderModule from "../library/draco/draco_decoder";
 
 export const threeService = {
->>>>>>> 57bc328 (add draco compression when exporting glb):src/services/three.tsx
   loadModel,
   updatePose,
   updateMorphValue,
