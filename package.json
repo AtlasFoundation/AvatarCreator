@@ -24,10 +24,7 @@
     "@dfinity/principal": "0.10.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
-<<<<<<< HEAD
-=======
     "@ethersproject/providers": "^5.6.5",
->>>>>>> 57bc328 (add draco compression when exporting glb)
     "@gltf-transform/core": "^2.1.5",
     "@gltf-transform/extensions": "^2.1.5",
     "@gltf-transform/functions": "^2.1.5",
@@ -69,10 +66,6 @@
     "three": "^0.136",
     "three-gltf-exporter": "^0.0.1",
     "typescript": "^4.6.3",
-<<<<<<< HEAD
-    "vite-plugin-dts": "^1.2.0",
-=======
->>>>>>> 57bc328 (add draco compression when exporting glb)
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
