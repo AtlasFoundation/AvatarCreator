@@ -3,10 +3,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
 import { Buffer } from "buffer";
+import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 import html2canvas from "html2canvas";
 import { VRM } from "@pixiv/three-vrm";
 import VRMExporter from "../library/VRM/VRMExporter";
-// import VRMExporter from "../library/VRM/vrm-exporter";
 export const sceneService = {
   loadModel,
   updatePose,
@@ -19,8 +19,75 @@ export const sceneService = {
   saveScreenShotByElementId,
   getScreenShot,
   getScreenShotByElementId,
-  getModelFromScene
+  getModelFromScene,
+  getMergedMesh
 };
+ 
+function getMergedMesh(asset : any){
+    let mergedGemeometry = new THREE.BufferGeometry;
+    const geometryArray = [];
+    const objectMaterial = new THREE.MeshLambertMaterial({ color: 0xffff00, side: THREE.DoubleSide })
+    let mergedResult = [];
+    let bones = [];
+    console.log(asset)
+    asset.traverse(child => {
+      if(child instanceof THREE.Mesh)
+      {
+        const clonedGeometry = child.geometry.clone()
+        clonedGeometry.morphTargetsRelative = true;
+        geometryArray.push(clonedGeometry.applyMatrix4( child.matrixWorld ));
+      }
+      if(child instanceof THREE.Bone){
+        let check = false;
+        
+        bones.map(bone =>{
+          if(bone.name === child.name){
+            check = true;
+            return;
+          }
+        })
+        if(!check) bones.push(child)
+      }
+    })
+    // for(let i = 0; i < geometryArray.length; i++){
+    //   mergedResult = mergeGeometry(geometryArray[i], mergedResult)
+    // }
+    mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray);
+    const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, objectMaterial);
+    var skeleton = new THREE.Skeleton( bones );
+    mergedMesh.bind( skeleton );
+    return mergedMesh;
+  }
+
+ function mergeGeometry(geo1, geo2) {
+    if(Object.keys(geo2).length === 0) return geo1;
+    var attributes = ["normal", "position", "skinIndex", "skinWeight"];
+    var dataLengths = [3, 3, 4, 4];
+    var geometryArray = [];
+    var geo = new THREE.BufferGeometry();
+    // geo = BufferGeometryUtils.mergeBufferGeometries(geometryArray)
+    for (var attIndex = 0; attIndex < attributes.length; attIndex++) {
+        var currentAttribute = attributes[attIndex];
+        var geo1Att = geo1.getAttribute(currentAttribute);
+        var geo2Att = geo2.getAttribute(currentAttribute);
+        var currentArray = null;
+        if (currentAttribute == "skinIndex") currentArray = new Uint16Array(geo1Att.array.length + geo2Att.array.length)
+        else currentArray = new Float32Array(geo1Att.array.length + geo2Att.array.length)
+        var innerCount = 0;
+        geo1Att.array.map((item) => {
+            currentArray[innerCount] = item;
+            innerCount++;
+        });
+        geo2Att.array.map((item) => {
+            currentArray[innerCount] = item;
+            innerCount++;
+        });
+        geo1Att.array = currentArray;
+        geo1Att.count = currentArray.length / dataLengths[attIndex];
+        geo.setAttribute(currentAttribute, geo1Att);
+      }
+    return geo;
+}
 
 async function getModelFromScene(scene: any, format: any) {
   if (format && format === 'gltf/glb') {
@@ -140,6 +207,7 @@ async function loadModel(file: any, type: any) {
   if (type && type === "vrm" && file) {
     const loader = new GLTFLoader();
     return loader.loadAsync(file).then((model) => {
+      console.log('model',model)
       VRM.from(model).then((vrm) => {
         console.log("VRM Model: ", vrm);
       });
@@ -241,7 +309,6 @@ async function download(
       model.scene,
       function (result) {
         if (result instanceof ArrayBuffer) {
-          console.log(result);
           saveArrayBuffer(result, `${downloadFileName}.glb`);
         } else {
           var output = JSON.stringify(result, null, 2);
