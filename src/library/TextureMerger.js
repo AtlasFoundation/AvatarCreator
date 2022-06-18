@@ -1,3 +1,4 @@
+import * as THREE from "three";
 var TextureMergerRectangle = function(x, y, width, height){
   this.x = x;
   this.y = y;
@@ -290,7 +291,7 @@ TextureMerger.prototype.calculateImageSize = function(texturesObj){
 TextureMerger.prototype.findNextTexture = function(texturesObj){
   var maxArea = -1;
   var foundTexture;
-  for (textureName in texturesObj){
+  for (var textureName in texturesObj){
     var texture = texturesObj[textureName];
     if (!this.textureCache[textureName]){
       if (texture.area > maxArea){
@@ -315,3 +316,4 @@ TextureMerger.prototype.rescale = function(canvas, scale){
   //this.debugCanvas(resizedCanvas);
   return resizedCanvas;
 }
+export default TextureMerger
