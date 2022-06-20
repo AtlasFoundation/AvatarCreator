@@ -9,6 +9,7 @@ import hairIcon from '../assets/thumbnails/hair.png';
 import legsIcon from '../assets/thumbnails/legs.png';
 import shirtIcon from '../assets/thumbnails/shirt.png';
 import shoesIcon from '../assets/thumbnails/shoes.png';
+import eyesIcon from '../assets/thumbnails/eyes.png'
 
 export default function Editor(props: any) {
   const { category, setCategory }: any = props;
@@ -90,6 +91,12 @@ export default function Editor(props: any) {
           <Avatar style={selectorButtonIcon}  src={legsIcon} />
           <br />
           Legs
+        </div>
+
+        <div onClick={() => setCategory('eyes')} style={ category && category === "eyes" ? selectorButton : selectorButtonActive } >
+          <Avatar style={selectorButtonIcon}  src={eyesIcon} />
+          <br />
+          Eye
         </div>
       </Stack>
     </div>
