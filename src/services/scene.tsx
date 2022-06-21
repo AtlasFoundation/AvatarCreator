@@ -7,6 +7,8 @@ import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUti
 import html2canvas from "html2canvas";
 import { VRM } from "@pixiv/three-vrm";
 import VRMExporter from "../library/VRM/VRMExporter";
+import TextureMerger from "../library/TextureMerger";
+import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 export const sceneService = {
   loadModel,
   updatePose,
@@ -26,13 +28,17 @@ export const sceneService = {
 function getMergedMesh(asset : any){
     let mergedGemeometry = new THREE.BufferGeometry;
     const geometryArray = [];
-    const objectMaterial = new THREE.MeshLambertMaterial({ color: 0xffff00, side: THREE.DoubleSide })
+    const objectMaterial = new THREE.MeshBasicMaterial()
     let mergedResult = [];
     let bones = [];
-    console.log(asset)
+    var textureArray = [];
+    var meshArray = [];
+
     asset.traverse(child => {
-      if(child instanceof THREE.Mesh)
+      if(child.isMesh)
       {
+        textureArray.push(child.material[0].map)
+        meshArray.push(child)
         const clonedGeometry = child.geometry.clone()
         clonedGeometry.morphTargetsRelative = true;
         geometryArray.push(clonedGeometry.applyMatrix4( child.matrixWorld ));
@@ -52,12 +58,35 @@ function getMergedMesh(asset : any){
     // for(let i = 0; i < geometryArray.length; i++){
     //   mergedResult = mergeGeometry(geometryArray[i], mergedResult)
     // }
-    mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray);
-    const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, objectMaterial);
-    var skeleton = new THREE.Skeleton( bones );
-    mergedMesh.bind( skeleton );
-    return mergedMesh;
+    onMerging(textureArray, meshArray);
+    // mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray);
+    // const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, objectMaterial);
+    // var skeleton = new THREE.Skeleton( bones );
+    // mergedMesh.bind( skeleton );
+    // return mergedMesh;
   }
+
+  function modifyChildUV(mesh, range){
+    var uvAttrAry = mesh.geometry.attributes.uv.array;
+    for (var i = 0; i < uvAttrAry.length; i += 2){
+      uvAttrAry[i] = (uvAttrAry[i] * (range.endU - range.startU) + range.startU);
+      uvAttrAry[i + 1] = (uvAttrAry[i + 1] * (range.startV - range.endV) + range.endV);
+    }
+    // mesh.geometry.attributes.uv.needUpdates;
+  }
+
+  function onMerging(textureArray, meshArray){
+    var pros = {}
+    textureArray.map((item, index) => {
+      pros['texture' + (index + 1)] = item ;
+    })
+    var textureMerger =  new TextureMerger(pros);
+    textureMerger.mergedTexture.flipY = false;
+    meshArray.map((mesh, index) => {
+      modifyChildUV(mesh, textureMerger.ranges['texture' + (index+1)]);
+      mesh.material[0].map = textureMerger.mergedTexture;
+    })
+  };
 
  function mergeGeometry(geo1, geo2) {
     if(Object.keys(geo2).length === 0) return geo1;
@@ -207,7 +236,6 @@ async function loadModel(file: any, type: any) {
   if (type && type === "vrm" && file) {
     const loader = new GLTFLoader();
     return loader.loadAsync(file).then((model) => {
-      console.log('model',model)
       VRM.from(model).then((vrm) => {
         console.log("VRM Model: ", vrm);
       });

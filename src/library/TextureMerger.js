@@ -51,7 +51,6 @@ var TextureMerger = function(texturesObj){
     if (txt instanceof THREE.CompressedTexture){
       throw new Error("CompressedTextures are not supported.");
     }
-
     if (typeof txt.image.toDataURL == "undefined"){
       var tmpCanvas = document.createElement("canvas");
       tmpCanvas.width = txt.image.naturalWidth;
@@ -70,11 +69,9 @@ var TextureMerger = function(texturesObj){
   for (textureName in texturesObj){
     this.textureCount ++;
     var texture = texturesObj[textureName];
-    console.log(texture.image.width)
     texture.image.width = this.maxWidth;
     texture.image.height = this.maxHeight;
     texture.area = texture.image.width * texture.image.height;
-    console.log(texture.image.width)
 
     if (texture.image.width > this.maxWidth){
       this.maxWidth = texture.image.width;
