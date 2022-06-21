@@ -164,6 +164,11 @@ export default function Selector(props) {
             scene.remove(avatar.legs.model)
           }
         }
+        if (traitName === "eyes") {
+          if (avatar.eyes) {
+            scene.remove(avatar.eyes.model)
+          }
+        }
       } else {
         if (trait.bodyTargets) {
           setTemplate(trait?.id)
@@ -277,6 +282,18 @@ export default function Selector(props) {
                   })
                   if (avatar.legs) {
                     scene.remove(avatar.legs.model)
+                  }
+                }
+                if (traitName === "eyes") {
+                  setAvatar({
+                    ...avatar,
+                    eyes: {
+                      traitInfo: trait,
+                      model: vrm.scene,
+                    }
+                  })
+                  if (avatar.eyes) {
+                    scene.remove(avatar.eyes.model)
                   }
                 }
                 setLoadingTrait(null)

@@ -86,7 +86,7 @@ export default function Editor(props: any) {
         </div>
 
         <div onClick={() => setCategory('eyes')} style={ category && category === "eyes" ? selectorButton : selectorButtonActive } >
-          <Avatar style={selectorButtonIcon}  src={'/eye.png'} />
+          <Avatar style={selectorButtonIcon}  src={'/eyes.png'} />
           <br />
           Eyes
         </div>

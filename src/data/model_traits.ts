@@ -353,80 +353,92 @@ export default [
             {
                 "id": "uid-e20",
                 "name": "Eyes 20",
-                "directory": "/eyes/eyes_20.vrm",
-                "thumbnail": "/data/eyes/1622793660-eye-02-mask.jpg"
+                "directory": "/eye/eye_1.vrm",
+                "thumbnail": "/public/eye_1.jpg"
             },
             {
                 "id": "uid-e21",
                 "name": "Eyes 21",
                 "directory": "/eyes/eyes_21.vrm",
-                "thumbnail": "/data/eyes/1622793662-eye-03-mask.jpg"
+                "thumbnail": "/public/eye_2.jpg"
             },
             {
                 "id": "uid-e23",
                 "name": "Eyes 23",
                 "directory": "/eyes/eyes_23.vrm",
-                "thumbnail": "/data/eyes/1622793666-eye-05-mask.jpg"
+                "thumbnail": "/public/eye_3.jpg"
             },
             {
                 "id": "uid-e27",
                 "name": "Eyes 27",
                 "directory": "/eyes/eyes_27.vrm",
-                "thumbnail": "/data/eyes/1625668092-eye-10-mask.jpg"
+                "thumbnail": "/public/eye_4.jpg"
             },
             {
-                "id": "uid-e15",
-                "name": "Eyes 15",
+                "id": "uid-e30",
+                "name": "Eyes 30",
                 "directory": "/eyes/eyes_15.vrm",
-                "thumbnail": "/data/eyes/1622793658-eye-01-mask.jpg"
+                "thumbnail": "/public/eye_5.jpg"
             },
             {
-                "id": "uid-e20",
-                "name": "Eyes 20",
+                "id": "uid-e31",
+                "name": "Eyes 31",
                 "directory": "/eyes/eyes_20.vrm",
-                "thumbnail": "/legs/Legs_27/Isometric.png"
+                "thumbnail": "/public/eye_6.jpg"
             },
             {
-                "id": "uid-e21",
-                "name": "Eyes 21",
+                "id": "uid-e32",
+                "name": "Eyes 32",
                 "directory": "/eyes/eyes_21.vrm",
-                "thumbnail": "/data/eyes/1622793662-eye-03-mask.jpg"
+                "thumbnail": "/public/eye_7.jpg"
             },
             {
-                "id": "uid-e23",
-                "name": "Eyes 23",
+                "id": "uid-e33",
+                "name": "Eyes 33",
                 "directory": "/eyes/eyes_23.vrm",
-                "thumbnail": "/data/eyes/1622793666-eye-05-mask.jpg"
+                "thumbnail": "/public/eye_8.jpg"
             },
             {
-                "id": "uid-e27",
-                "name": "Eyes 27",
+                "id": "uid-e34",
+                "name": "Eyes 34",
                 "directory": "/eyes/eyes_27.vrm",
-                "thumbnail": "/shoes/Shoes_19/Isometric.png"
+                "thumbnail": "/public/eye_9.jpg"
             },
             {
-                "id": "uid-e15",
-                "name": "Eyes 15",
+                "id": "uid-e35",
+                "name": "Eyes 35",
                 "directory": "/eyes/eyes_15.vrm",
-                "thumbnail": "/data/eyes/1622793658-eye-01-mask.jpg"
+                "thumbnail": "/public/eye_10.jpg"
             },
             {
-                "id": "uid-l15",
-                "name": "Legs 15",
+                "id": "uid-l36",
+                "name": "Legs 36",
                 "directory": "/legs/Legs_15.vrm",
-                "thumbnail": "/legs/Legs_15/Isometric.png"
+                "thumbnail": "/public/eye_11.jpg"
             },
             {
-                "id": "uid-e21",
-                "name": "Eyes 21",
+                "id": "uid-e37",
+                "name": "Eyes 37",
                 "directory": "/eyes/eyes_21.vrm",
-                "thumbnail": "/public/arms.png"
+                "thumbnail": "/public/eye_12.jpg"
             },
             {
-                "id": "uid-e23",
-                "name": "Eyes 23",
+                "id": "uid-e38",
+                "name": "Eyes 38",
                 "directory": "/eyes/eyes_23.vrm",
-                "thumbnail": "/data/eyes/1622793666-eye-05-mask.jpg"
+                "thumbnail": "/public/eye_13.jpg"
+            },
+            {
+                "id": "uid-e39",
+                "name": "Eyes 39",
+                "directory": "/eyes/eyes_23.vrm",
+                "thumbnail": "/public/eye_14.jpg"
+            },
+            {
+                "id": "uid-h1",
+                "name": "Hair 1",
+                "directory": "/face/Face_2.vrm",
+                "thumbnail": "/face/Face_2/Isometric.png"
             },
             {
                 "id": "uid-h1",
@@ -434,6 +446,12 @@ export default [
                 "directory": "/hair/Hair_1.vrm",
                 "thumbnail": "/hair/Hair_1/Isometric.png"
             },
+            {
+            "id": "uid-f2",
+                "name": "Face 2",
+                "directory": "/face/Face_2.vrm",
+                "thumbnail": "/face/Face_2/Isometric.png"
+            }
         ]
     }
 ]
