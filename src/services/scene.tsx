@@ -8,7 +8,6 @@ import html2canvas from "html2canvas";
 import { VRM } from "@pixiv/three-vrm";
 import VRMExporter from "../library/VRM/VRMExporter";
 import TextureMerger from "../library/TextureMerger";
-import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 export const sceneService = {
   loadModel,
   updatePose,
@@ -24,28 +23,34 @@ export const sceneService = {
   getModelFromScene,
   getMergedMesh
 };
- 
+var meshArray = [];
+var groupArray = [];
 function getMergedMesh(asset : any){
-    let mergedGemeometry = new THREE.BufferGeometry;
     const geometryArray = [];
-    const objectMaterial = new THREE.MeshBasicMaterial()
-    let mergedResult = [];
     let bones = [];
     var textureArray = [];
-    var meshArray = [];
-
+    var meshMaterial = [];  
+    var mergedResult = [];
+    const skinnedMeshes = {};
+    // const cloneBones = {};
+    // const cloneSkinnedMeshes = {};
+    // const clone = {
+    //   scene: asset.clone(true)
+    // };
+    var skeleton;
     asset.traverse(child => {
+      if(child.isGroup) groupArray.push(child);
       if(child.isMesh)
       {
         textureArray.push(child.material[0].map)
-        meshArray.push(child)
+        meshArray.push(child);
         const clonedGeometry = child.geometry.clone()
         clonedGeometry.morphTargetsRelative = true;
         geometryArray.push(clonedGeometry.applyMatrix4( child.matrixWorld ));
+        meshMaterial.push(child.material[0]);
       }
       if(child instanceof THREE.Bone){
         let check = false;
-        
         bones.map(bone =>{
           if(bone.name === child.name){
             check = true;
@@ -54,16 +59,36 @@ function getMergedMesh(asset : any){
         })
         if(!check) bones.push(child)
       }
+
+      if (child.isSkinnedMesh) {
+        skinnedMeshes[child.name] = child;
+        skeleton = child.skeleton;
+      }
+      
     })
-    // for(let i = 0; i < geometryArray.length; i++){
-    //   mergedResult = mergeGeometry(geometryArray[i], mergedResult)
-    // }
-    onMerging(textureArray, meshArray);
-    // mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray);
-    // const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, objectMaterial);
-    // var skeleton = new THREE.Skeleton( bones );
-    // mergedMesh.bind( skeleton );
-    // return mergedMesh;
+
+    // clone.scene.traverse(node => {
+    //   if (node.isBone) {
+    //     cloneBones[node.name] = node;
+    //   }
+  
+    //   if (node.isSkinnedMesh) {
+    //     cloneSkinnedMeshes[node.name] = node;
+    //   }
+    // });
+
+    const mergedMaterial = onMerging(textureArray, meshArray);
+    var mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray, true);
+
+    var material = new THREE.MeshBasicMaterial({ map: mergedMaterial });
+
+    for(let i = 0; i < geometryArray.length; i++){
+      mergedResult = mergeAttribute(geometryArray[i], mergedResult, mergedGemeometry)
+    }
+    const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, material);
+    var newSkeleton = new THREE.Skeleton( bones, skeleton.boneInverses );
+    mergedMesh.bind( newSkeleton );
+    return mergedMesh;
   }
 
   function modifyChildUV(mesh, range){
@@ -86,9 +111,10 @@ function getMergedMesh(asset : any){
       modifyChildUV(mesh, textureMerger.ranges['texture' + (index+1)]);
       mesh.material[0].map = textureMerger.mergedTexture;
     })
+    return textureMerger.mergedTexture;
   };
 
- function mergeGeometry(geo1, geo2) {
+ function mergeAttribute(geo1, geo2, res) {
     if(Object.keys(geo2).length === 0) return geo1;
     var attributes = ["normal", "position", "skinIndex", "skinWeight"];
     var dataLengths = [3, 3, 4, 4];
@@ -113,9 +139,9 @@ function getMergedMesh(asset : any){
         });
         geo1Att.array = currentArray;
         geo1Att.count = currentArray.length / dataLengths[attIndex];
-        geo.setAttribute(currentAttribute, geo1Att);
+        res.setAttribute(currentAttribute, geo1Att);
       }
-    return geo;
+    return res;
 }
 
 async function getModelFromScene(scene: any, format: any) {
@@ -350,6 +376,15 @@ async function download(
     saveArrayBuffer(exporter.parse(model.scene), `${downloadFileName}.obj`);
   } else if (format && format === "vrm") {
     const exporter = new VRMExporter();
+    const merged = getMergedMesh(model.scene);
+   
+    meshArray.forEach(mesh => {
+      model.scene.remove(mesh)
+    });
+    // groupArray.forEach(group => {
+    //   group.parent.remove(group);
+    // })
+    model.scene.add(merged);
     exporter.parse(model, (vrm : ArrayBuffer) => {
       saveArrayBufferVRM(vrm, `${downloadFileName}.vrm`);
     });
