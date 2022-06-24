@@ -24,7 +24,6 @@ export const sceneService = {
   getMergedMesh
 };
 var meshArray = [];
-var groupArray = [];
 function getMergedMesh(asset : any){
     const geometryArray = [];
     let bones = [];
@@ -32,14 +31,8 @@ function getMergedMesh(asset : any){
     var meshMaterial = [];  
     var mergedResult = [];
     const skinnedMeshes = {};
-    // const cloneBones = {};
-    // const cloneSkinnedMeshes = {};
-    // const clone = {
-    //   scene: asset.clone(true)
-    // };
     var skeleton;
     asset.traverse(child => {
-      if(child.isGroup) groupArray.push(child);
       if(child.isMesh)
       {
         textureArray.push(child.material[0].map)
@@ -67,28 +60,17 @@ function getMergedMesh(asset : any){
       
     })
 
-    // clone.scene.traverse(node => {
-    //   if (node.isBone) {
-    //     cloneBones[node.name] = node;
-    //   }
-  
-    //   if (node.isSkinnedMesh) {
-    //     cloneSkinnedMeshes[node.name] = node;
-    //   }
-    // });
-
     const mergedMaterial = onMerging(textureArray, meshArray);
-    var mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray, true);
+    // var mergedGemeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArray, true);
+    // var material = new THREE.MeshBasicMaterial({ map: mergedMaterial });
 
-    var material = new THREE.MeshBasicMaterial({ map: mergedMaterial });
-
-    for(let i = 0; i < geometryArray.length; i++){
-      mergedResult = mergeAttribute(geometryArray[i], mergedResult, mergedGemeometry)
-    }
-    const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, material);
-    var newSkeleton = new THREE.Skeleton( bones, skeleton.boneInverses );
-    mergedMesh.bind( newSkeleton );
-    return mergedMesh;
+    // for(let i = 0; i < geometryArray.length; i++){
+    //   mergedResult = mergeAttribute(geometryArray[i], mergedResult, mergedGemeometry)
+    // }
+    // const mergedMesh = new THREE.SkinnedMesh(mergedGemeometry, material);
+    // var newSkeleton = new THREE.Skeleton( bones, skeleton.boneInverses );
+    // mergedMesh.bind( newSkeleton );
+    // return mergedMesh;
   }
 
   function modifyChildUV(mesh, range){
@@ -110,6 +92,15 @@ function getMergedMesh(asset : any){
     meshArray.map((mesh, index) => {
       modifyChildUV(mesh, textureMerger.ranges['texture' + (index+1)]);
       mesh.material[0].map = textureMerger.mergedTexture;
+      
+      mesh.material[0].alphaMode = 'AlphaBlend';
+      mesh.material[0].side = THREE.DoubleSide;
+      mesh.material[0].transparent = true
+      mesh.material[0].alphaWrite  = false;
+      mesh.material[0].alphaWrite = false;
+      mesh.material[0].format = THREE.RGBAFormat;
+
+      console.log(mesh)
     })
     return textureMerger.mergedTexture;
   };
@@ -119,7 +110,7 @@ function getMergedMesh(asset : any){
     var attributes = ["normal", "position", "skinIndex", "skinWeight"];
     var dataLengths = [3, 3, 4, 4];
     var geometryArray = [];
-    var geo = new THREE.BufferGeometry();
+    // var geo = new THREE.BufferGeometry();
     // geo = BufferGeometryUtils.mergeBufferGeometries(geometryArray)
     for (var attIndex = 0; attIndex < attributes.length; attIndex++) {
         var currentAttribute = attributes[attIndex];
@@ -376,15 +367,14 @@ async function download(
     saveArrayBuffer(exporter.parse(model.scene), `${downloadFileName}.obj`);
   } else if (format && format === "vrm") {
     const exporter = new VRMExporter();
-    const merged = getMergedMesh(model.scene);
+    // const merged = getMergedMesh(model.scene);
+    getMergedMesh(model.scene);
    
-    meshArray.forEach(mesh => {
-      model.scene.remove(mesh)
-    });
-    // groupArray.forEach(group => {
-    //   group.parent.remove(group);
-    // })
-    model.scene.add(merged);
+    // meshArray.forEach(mesh => {
+    //   model.scene.remove(mesh)
+    // });
+
+    // model.scene.add(merged);
     exporter.parse(model, (vrm : ArrayBuffer) => {
       saveArrayBufferVRM(vrm, `${downloadFileName}.vrm`);
     });
