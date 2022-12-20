@@ -52,42 +52,42 @@ export default function Editor(props: any) {
       >
 
         <div onClick={() => setCategory('color')} style={ category && category === "color" ? selectorButton : selectorButtonActive }>
-          <Avatar style={selectorButtonIcon} /* src={colorIcon} */ />
+          <Avatar style={selectorButtonIcon} src={colorIcon} />
           <br />
           Skin Tone
         </div>
         <div onClick={() => setCategory('body')} style={ category && category === "body" ? selectorButton : selectorButtonActive }>
-          <Avatar style={selectorButtonIcon}  /*src={faceIcon}*/ />
+          <Avatar style={selectorButtonIcon}  src={'/body.png'} />
           <br />
           Body
         </div>
         <div onClick={() => setCategory('hair')} style={ category && category === "hair" ? selectorButton : selectorButtonActive }>
-          <Avatar style={selectorButtonIcon} /*src={hairIcon}*/ />
+          <Avatar style={selectorButtonIcon} src={hairIcon} />
           <br />
           Hair
         </div>
         <div onClick={() => setCategory('face')} style={ category && category === "face" ? selectorButton : selectorButtonActive }>
-          <Avatar style={selectorButtonIcon} /*src={faceIcon}*//>
+          <Avatar style={selectorButtonIcon} src={faceIcon} />
           <br />
           Face
         </div>
         <div onClick={() => setCategory('tops')} style={ category && category === "tops" ? selectorButton : selectorButtonActive }>
-          <Avatar style={selectorButtonIcon}  /*src={shirtIcon}*/ />
+          <Avatar style={selectorButtonIcon}  src={shirtIcon} />
           <br />
           Tops
         </div>
         <div onClick={() => setCategory('arms')} style={ category && category === "arms" ? selectorButton : selectorButtonActive } >
-          <Avatar style={selectorButtonIcon}  /*src={armsIcon}*/  />
+          <Avatar style={selectorButtonIcon}  src={armsIcon} />
           <br />
           Arms
         </div>
         <div onClick={() => setCategory('shoes')} style={ category && category === "shoes" ? selectorButton : selectorButtonActive } >
-          <Avatar style={selectorButtonIcon}  /*src={shoesIcon}*/ />
+          <Avatar style={selectorButtonIcon}  src={shoesIcon} />
           <br />
           Shoes
         </div>
         <div onClick={() => setCategory('legs')} style={ category && category === "legs" ? selectorButton : selectorButtonActive } >
-          <Avatar style={selectorButtonIcon}  /*src={legsIcon}*/ />
+          <Avatar style={selectorButtonIcon}  src={legsIcon} />
           <br />
           Legs
         </div>
