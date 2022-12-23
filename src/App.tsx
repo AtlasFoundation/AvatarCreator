@@ -20,8 +20,8 @@ function App() {
 
   const handleConnect = (principalId) => {
     console.log("Logged in with principalId", principalId);
-    // setPrincipalId(principalId);
-    // setConnected(true);
+    setPrincipalId(principalId);
+    setConnected(true);
   }
 
   const handleFail = (error) => {
