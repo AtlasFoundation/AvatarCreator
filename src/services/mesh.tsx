@@ -60,7 +60,7 @@ async function setDefaultBoneRotations() {
     Torso_Hip: (window as any).getRotation("Torso_Hip"),
     Torso_Spine: (window as any).getRotation("Torso_Spine"),
     Torso_Chest: (window as any).getRotation("Torso_Chest"),
-    Torso_Neck: (window as any).getRotation("Torso_Neck"),
+    Torso_neck: (window as any).getRotation("Torso_neck"),
     Torso_Sholder_L: (window as any).getRotation("Torso_Sholder_L"),
     Torso_UpperArm_L: (window as any).getRotation("Torso_UpperArm_L"),
     ArmL_LowerArm_L: (window as any).getRotation("ArmL_LowerArm_L"),
