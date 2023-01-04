@@ -1,6 +1,6 @@
 import React from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import MintIcon from "@mui/icons-material/Wallet";
+import WalletIcon from "@mui/icons-material/Wallet";
 import { Modal } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -52,7 +52,7 @@ const style = {
       <div style={{
         position: "absolute",
         top: "20px",
-        right: "154px",
+        right: "225px",
         zIndex: 10
       }}>
         <Button
@@ -63,7 +63,7 @@ const style = {
           onClick={handleOpen}
         >
           <Avatar>
-            <MintIcon />
+            <WalletIcon />
           </Avatar>
         </Button>
         <Modal

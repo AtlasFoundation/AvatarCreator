@@ -52,7 +52,7 @@ export default function DownloadCharacter({ scene, templateInfo, model, download
     <div style={{
       position: "absolute",
       top: "20px",
-      right: "154px",
+      right: "75px",
       zIndex: 10
     }}>
       <Button

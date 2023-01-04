@@ -39,7 +39,7 @@ export default function MintCharacter({ scene, templateInfo, model, mintPopup, s
     sceneService.saveScreenShotByElementId(id).then(() => {});
   };
   const mintModel = (format: any) => {
-    //<sceneService className="mint"></sceneService>(model, `CC_Model_${templateInfo.name.replace(" ", "_")}`, format, false);
+     //<sceneService className="mint"></sceneService>(model, `CC_Model_${templateInfo.name.replace(" ", "_")}`, format, false);
   };
   const handleOpen = () => {
     setMintPopup(true);
@@ -52,7 +52,7 @@ export default function MintCharacter({ scene, templateInfo, model, mintPopup, s
     <div style={{
       position: "absolute",
       top: "20px",
-      right: "154px",
+      right: "150px",
       zIndex: 10
     }}>
       <Button
