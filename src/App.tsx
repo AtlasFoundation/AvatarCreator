@@ -9,7 +9,7 @@ const defaultTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#b240e0",
+      main: "#de2a5e",
     },
   },
 })
