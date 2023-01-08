@@ -93,26 +93,6 @@ async function saveScreenShotByElementId(id: string) {
   }, 600);
 }
 
-async function mintScreenShotByElementID(id: string) {
-  setTimeout(() => {
-    setTimeout(() => {
-      getScreenShotByElementId(id).then((screenshot) => {
-        const link = document.createElement("a");
-        link.style.display = "none";
-        document.body.appendChild(link);
-        function save(blob, filename) {
-          link.href = URL.createObjectURL(blob);
-          link.download = filename;
-          link.click();
-        }
-        function saveArrayBuffer(buffer) {
-          save(new Blob([buffer], { type: "image/json" }), "screenshot.jpg");
-        }
-        saveArrayBuffer(screenshot);
-      });
-    }, 600);
-  }, 600);
-}
 async function getObjectValue(target: any, scene: any, value: any) {
   if (target && scene) {
     const object = scene.getObjectByName(target);
@@ -280,7 +260,6 @@ export const sceneService = {
   setMaterialColor,
   getObjectValue,
   saveScreenShotByElementId,
-  mintScreenShotByElementID,
   getScreenShot,
   getScreenShotByElementId,
   getModelFromScene,
