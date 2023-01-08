@@ -23,8 +23,8 @@ export default function Editor(props: any) {
 
   const selectorButtonIcon = {
     display: "inline-block",
-    width: "40px",
-    height: "40px",
+    width: "80px",
+    height: "80px",
     padding: "2px",
   }
 
@@ -59,7 +59,7 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/color.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/whitePNG/color.png"} />
           <br />
           Skin Tone
         </div>
@@ -71,7 +71,7 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/body.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/bodygradient.png"} />
           <br />
           Gender
         </div>
@@ -83,7 +83,7 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/shirt.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/longsleevegradient.png"} />
           <br />
           Body
         </div>
@@ -95,7 +95,7 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/shirt.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/vestgradient.png"} />
           <br />
           Chest
         </div>
@@ -107,9 +107,38 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/face.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/whitehelmetgradient.png"} />
           <br />
           Head
+        </div>
+        <div
+          onClick={() => setCategory("accessories")}
+          style={
+            category && category === "accessories"
+              ? selectorButton
+              : selectorButtonActive
+          }
+        >
+          <Avatar style={selectorButtonIcon} src={"public/ui/earringsgradient.png"} />
+          <br />
+          Accessories
+        </div>
+        <div
+          onClick={() => setCategory("hair")}
+          style={
+            category && category === "hair"
+              ? selectorButton
+              : selectorButtonActive
+          }
+        >
+          <Avatar style={selectorButtonIcon} src={"public/ui/hairgradient2.png"} />
+          <br />
+          Hair
+        </div>
+        <div onClick={() => setCategory('eye')} style={ category && category === "eye" ? selectorButton : selectorButtonActive } >
+          <Avatar style={selectorButtonIcon}  src={'public/ui/eyegradient.png'}  />
+          <br />
+          Eye
         </div>
         <div
           onClick={() => setCategory("neck")}
@@ -119,7 +148,7 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/neck.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/necklacegradient.png"} />
           <br />
           Neck
         </div>
@@ -131,32 +160,30 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/arms.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/glovesgradient.png"} />
           <br />
           Hand
         </div>
-        {/* <div onClick={() => setCategory('ring')} style={ category && category === "ring" ? selectorButton : selectorButtonActive } >
-          <Avatar style={selectorButtonIcon}  src={'/arms.png'}  />
+        <div onClick={() => setCategory('ring')} style={ category && category === "ring" ? selectorButton : selectorButtonActive } >
+          <Avatar style={selectorButtonIcon}  src={'public/ui/ringgradient.png'}  />
           <br />
           Ring
-        </div> */}
-        <div
-          onClick={() => setCategory("waist")}
+        </div>
+        <div onClick={() => setCategory("waist")}
           style={
             category && category === "waist"
               ? selectorButton
               : selectorButtonActive
-          }
-        >
-          <Avatar style={selectorButtonIcon} src={"/pants.png"} />
+          }>
+          <Avatar style={selectorButtonIcon} src={"public/ui/beltgradient2.png"} />
           <br />
           Waist
         </div>
-        {/* <div onClick={() => setCategory('weapon')} style={ category && category === "weapon" ? selectorButton : selectorButtonActive } >
-          <Avatar style={selectorButtonIcon}  src={'/arms.png'} />
+        <div onClick={() => setCategory('weapon')} style={ category && category === "weapon" ? selectorButton : selectorButtonActive } >
+          <Avatar style={selectorButtonIcon}  src={'public/ui/baggradient.png'} />
           <br />
           Weapon
-        </div> */}
+        </div>
         <div
           onClick={() => setCategory("legs")}
           style={
@@ -165,11 +192,23 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/legs.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/leggingsgradient.png"} />
           <br />
           Legs
         </div>
         <div
+          onClick={() => setCategory("pants")}
+          style={
+            category && category === "pants"
+              ? selectorButton
+              : selectorButtonActive
+          }
+        >
+          <Avatar style={selectorButtonIcon} src={"public/ui/pantsgradient.png"} />
+          <br />
+          Pants
+        </div>
+      <div
           onClick={() => setCategory("foot")}
           style={
             category && category === "foot"
@@ -177,9 +216,9 @@ export default function Editor(props: any) {
               : selectorButtonActive
           }
         >
-          <Avatar style={selectorButtonIcon} src={"/shoes.png"} />
+          <Avatar style={selectorButtonIcon} src={"public/ui/sneakersgradient.png"} />
           <br />
-          Foot
+          Shoes
         </div>
       </Stack>
     </div>

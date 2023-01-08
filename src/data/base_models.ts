@@ -3,7 +3,7 @@ export default [
     "id": "1",
     "name": "Male",
     "file": "./models/body1.glb",
-    "thumbnail": "/body.png",
+    "thumbnail": "public/ui/bodygradient.png",
     "format": "glb",
     "bodyTargets": [
       "Body",
@@ -17,7 +17,7 @@ export default [
     "id": "2",
     "name": "Female",
     "file": "./models/body2.glb",
-    "thumbnail": "/body.png",
+    "thumbnail": "public/ui/femalegradient.png",
     "format": "glb",
     "bodyTargets": [
       "Body",

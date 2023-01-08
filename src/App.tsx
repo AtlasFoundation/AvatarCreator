@@ -9,7 +9,7 @@ const defaultTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#de2a5e",
+      main: "#b240e0",
     },
   },
 })
@@ -20,8 +20,8 @@ function App() {
 
   const handleConnect = (principalId) => {
     console.log("Logged in with principalId", principalId);
-    // setPrincipalId(principalId);
-    // setConnected(true);
+    principalId(principalId);
+    setConnected(true);
   }
 
   const handleFail = (error) => {

@@ -1,4 +1,6 @@
-# Webaverse Avatar Creator
+![image](https://user-images.githubusercontent.com/64185677/187881932-87c2b005-cd6e-4aff-a78d-46d654f255c3.png)
+
+# Atlas Avatar Creator
 An open, collaborative and evolving 3D avatar creator and optimizer for the open metaverse.
 
 

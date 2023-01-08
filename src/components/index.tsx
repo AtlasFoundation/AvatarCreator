@@ -1,7 +1,8 @@
-import { createTheme, ThemeProvider } from "@mui/material"
+import { createTheme, MenuItemProps, ThemeProvider } from "@mui/material"
 import React, { Suspense, useState, useEffect, Fragment } from "react"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import DownloadCharacter from "./Download"
+import MintCharacter from "./Mint"
 import LoadingOverlayCircularStatic from "./LoadingOverlay"
 import { sceneService } from "../services"
 import { startAnimation } from "../library/animations/animation"
@@ -36,7 +37,7 @@ export default function CharacterEditor(props: any) {
   // const [animations, setAnimations] = useState<object>(Object);
   // const [body, setBody] = useState<any>();
 
-  const { theme, templates, mintPopup } = props
+  const { theme, templates } = props
   // Selected category State Hook
   const [category, setCategory] = useState("color")
   // 3D Model Content State Hooks ( Scene, Nodes, Materials, Animations e.t.c ) //
@@ -45,7 +46,7 @@ export default function CharacterEditor(props: any) {
   const [scene, setScene] = useState<object>(Object)
   // States Hooks used in template editor //
   const [templateInfo, setTemplateInfo] = useState({ file: null, format: null })
-
+  const [mintPopup, setMintPopup] = useState<boolean>(false)
   const [downloadPopup, setDownloadPopup] = useState<boolean>(false)
   const [template, setTemplate] = useState<number>(1)
   const [loadingModelProgress, setLoadingModelProgress] = useState<number>(0)
@@ -67,7 +68,7 @@ export default function CharacterEditor(props: any) {
     palette: {
       mode: "dark",
       primary: {
-        main: "#de2a5e",
+        main: "#b240e0",
       },
     },
   })
@@ -111,7 +112,7 @@ export default function CharacterEditor(props: any) {
     <Suspense fallback="loading...">
       <ThemeProvider theme={theme ?? defaultTheme}>
         {templateInfo && (
-          <Fragment>
+          <React.Fragment>
             {loadingModel && (
               <LoadingOverlayCircularStatic
                 loadingModelProgress={loadingModelProgress}
@@ -123,6 +124,13 @@ export default function CharacterEditor(props: any) {
               model={model}
               downloadPopup={downloadPopup}
               setDownloadPopup={setDownloadPopup}
+            />
+            <MintCharacter
+              scene={scene}
+              templateInfo={templateInfo}
+              model={model}
+              mintPopup={mintPopup}
+              setMintPopup={setMintPopup}
             />
             <Scene
               wrapClass="generator"
@@ -139,7 +147,7 @@ export default function CharacterEditor(props: any) {
               setTemplateInfo={setTemplateInfo}
               templateInfo={templateInfo}
             />
-          </Fragment>
+          </React.Fragment>
         )}
       </ThemeProvider>
     </Suspense>

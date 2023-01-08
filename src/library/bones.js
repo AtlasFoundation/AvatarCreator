@@ -17,7 +17,7 @@ export default [
     },
     {
         "name": "Left Shoulder",
-        "bone": "Torso_Sholder_L"
+        "bone": "Torso_Shoulder_L"
     },
     {
         "name": "Left Upper Arm",
@@ -33,7 +33,7 @@ export default [
     },
     {
         "name": "Right Shoulder",
-        "bone": "Torso_Sholder_R"
+        "bone": "Torso_Shoulder_R"
     },
     {
         "name": "Right Upper Arm",

@@ -1,6 +1,6 @@
 import React from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import DownloadIcon from "@mui/icons-material/Download";
+import MintIcon from "@mui/icons-material/Wallet";
 import { Modal } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -34,49 +34,49 @@ const closePopup = {
   color: "#999999"
 }
 
-export default function DownloadCharacter({ scene, templateInfo, model, downloadPopup, setDownloadPopup }) {
+export default function MintCharacter({ scene, templateInfo, model, mintPopup, setMintPopup }) {
   const saveScreenshot = async (id:string) => {
     sceneService.saveScreenShotByElementId(id).then(() => {});
   };
-  const downloadModel = (format: any) => {
-    sceneService.download(model, `CC_Model_${templateInfo.name.replace(" ", "_")}`, format, false);
+  const mintModel = (format: any) => {
+     //<sceneService className="mint"></sceneService>(model, `CC_Model_${templateInfo.name.replace(" ", "_")}`, format, false);
   };
   const handleOpen = () => {
-    setDownloadPopup(true);
+    setMintPopup(true);
   };
   const handleClose = () => {
-    setDownloadPopup(false);
+    setMintPopup(false);
   };
 
   return (
     <div style={{
       position: "absolute",
       top: "20px",
-      right: "75px",
+      right: "150px",
       zIndex: 10
     }}>
       <Button
-        id="download-button"
-        aria-controls="download-menu"
+        id="mint-button"
+        aria-controls="mint-menu"
         aria-haspopup="true"
-        aria-expanded={downloadPopup ? "true" : undefined}
+        aria-expanded={mintPopup ? "true" : undefined}
         onClick={handleOpen}
       >
         <Avatar>
-          <DownloadIcon />
+          <MintIcon />
         </Avatar>
       </Button>
       <Modal
-        open={downloadPopup}
+        open={mintPopup}
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
         <Box sx={{ ...style, border: 0 }}>
         <Button onClick={handleClose} sx={closePopup}><CloseIcon /></Button>
-        <Button onClick={() => downloadModel('vrm')}>Download VRM</Button>
-        <Button onClick={() => downloadModel('gltf/glb')}>Download GLB</Button>
-          <Button onClick={() => saveScreenshot('screenshot-canvas-wrap')}>Screenshot</Button>
+        <Button onClick={() => mintModel('vrm')}>Mint VRM</Button> 
+        <Button onClick={() => mintModel('gltf/glb')}>Download GLB</Button>
+       <Button onClick={() => saveScreenshot('screenshot-canvas-wrap')}>Screenshot</Button>
         <div
         id="screenshot-canvas-wrap"
         style={{ height: 2080, width: 2080, zoom: 0.2, background: "#111111" }}
@@ -126,7 +126,7 @@ export default function DownloadCharacter({ scene, templateInfo, model, download
             target={[0, 1, 0]}
           />
           <PerspectiveCamera>
-            {downloadPopup && (
+            {mintPopup && (
             <TemplateModel scene={scene} />
             )}
           </PerspectiveCamera>
