@@ -68,7 +68,7 @@ export default function CharacterEditor(props: any) {
     palette: {
       mode: "dark",
       primary: {
-        main: "#b240e0",
+        main: "#de2a5e",
       },
     },
   })
@@ -112,7 +112,7 @@ export default function CharacterEditor(props: any) {
     <Suspense fallback="loading...">
       <ThemeProvider theme={theme ?? defaultTheme}>
         {templateInfo && (
-          <React.Fragment>
+          <Fragment>
             {loadingModel && (
               <LoadingOverlayCircularStatic
                 loadingModelProgress={loadingModelProgress}
@@ -147,7 +147,7 @@ export default function CharacterEditor(props: any) {
               setTemplateInfo={setTemplateInfo}
               templateInfo={templateInfo}
             />
-          </React.Fragment>
+          </Fragment>
         )}
       </ThemeProvider>
     </Suspense>
